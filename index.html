@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>API Documentation</title>
+    <script src="https://unpkg.com/@stoplight/elements@8.0.0/web-components.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements@8.0.0/styles.min.css">
+    <style>
+      :root {
+        --search-border: #d7dde7;
+        --search-bg: #ffffff;
+        --search-shadow: rgba(14, 28, 50, 0.08);
+        --search-accent: #2f6feb;
+        --search-muted: #6e7f95;
+      }
+
+      html, body {
+        margin: 0;
+        height: 100%;
+      }
+
+      .search-shell {
+        position: sticky;
+        top: 8px;
+        left: 0;
+        z-index: 5;
+        width: auto;
+        margin: 0 8px 8px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .search-card {
+        background: var(--search-bg);
+        border: 1px solid var(--search-border);
+        border-radius: 12px;
+        box-shadow: 0 6px 22px var(--search-shadow);
+        padding: 8px;
+      }
+
+      .search-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .search-icon {
+        color: var(--search-muted);
+        font-size: 14px;
+        user-select: none;
+      }
+
+      .search-input {
+        flex: 1;
+        width: auto;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        background: #f8fafc;
+        padding: 8px 9px;
+        font-size: 13px;
+        box-sizing: border-box;
+        outline: none;
+      }
+
+      .search-input:focus {
+        border-color: var(--search-accent);
+        background: #ffffff;
+      }
+
+      .search-clear {
+        border: 0;
+        background: #eef3fb;
+        color: #4a5f7d;
+        border-radius: 999px;
+        width: 22px;
+        height: 22px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        line-height: 1;
+      }
+
+      .search-clear:hover {
+        background: #e1eaf8;
+      }
+
+      .search-results {
+        margin-top: 8px;
+        background: var(--search-bg);
+        border: 1px solid var(--search-border);
+        border-radius: 10px;
+        box-shadow: 0 8px 20px var(--search-shadow);
+        max-height: min(56vh, 480px);
+        overflow-y: auto;
+        padding: 4px;
+        display: none;
+      }
+
+      .search-meta {
+        font-size: 11px;
+        color: var(--search-muted);
+        padding: 6px 8px 4px;
+      }
+
+      .search-result {
+        border: 0;
+        background: transparent;
+        width: 100%;
+        text-align: left;
+        border-radius: 8px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+
+      .search-result:hover {
+        background: #f2f6fc;
+      }
+
+      .result-path {
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 12px;
+        color: #26415f;
+      }
+
+      .result-summary {
+        margin-top: 3px;
+        font-size: 12px;
+        color: #51637a;
+      }
+
+      .sl-elements-api .sl-border-r {
+        overflow: visible;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="search-shell">
+      <div class="search-card">
+        <div class="search-row">
+          <span class="search-icon" aria-hidden="true">&#128269;</span>
+          <input
+            id="opSearch"
+            class="search-input"
+            type="text"
+            placeholder="Search endpoint, path, tag, summary"
+            autocomplete="off"
+          >
+          <button id="clearSearch" class="search-clear" type="button" aria-label="Clear search">&times;</button>
+        </div>
+        <div id="searchResults" class="search-results"></div>
+      </div>
+    </div>
+
+    <elements-api
+      id="docs"
+      apiDescriptionUrl="stoplight.json"
+      router="hash"
+      layout="sidebar"
+      allowSpecUrlLoad="false"
+    ></elements-api>
+
+    <script>
+      const searchInput = document.getElementById("opSearch");
+      const searchResults = document.getElementById("searchResults");
+      const clearSearchBtn = document.getElementById("clearSearch");
+      const searchShell = document.querySelector(".search-shell");
+      let routeIndex = [];
+
+      function placeSearchInsideSidebar() {
+        const sidebar = document.querySelector(".sl-flex.sl-overflow-y-auto.sl-flex-col.sl-sticky.sl-inset-y-0.sl-pt-8.sl-bg-canvas-100.sl-border-r");
+        if (!sidebar || !searchShell) return;
+        if (!sidebar.contains(searchShell)) {
+          sidebar.prepend(searchShell);
+        }
+      }
+
+      [0, 200, 600, 1200, 2200].forEach((ms) => {
+        setTimeout(placeSearchInsideSidebar, ms);
+      });
+
+      window.addEventListener("resize", placeSearchInsideSidebar);
+      window.addEventListener("hashchange", placeSearchInsideSidebar);
+
+      function buildRouteIndexFromSpec(spec) {
+        const paths = spec && spec.paths ? spec.paths : {};
+        const next = [];
+
+        Object.entries(paths).forEach(([path, methods]) => {
+          Object.entries(methods || {}).forEach(([method, op]) => {
+            if (!op || typeof op !== "object") return;
+
+            const operationId = op.operationId ? String(op.operationId) : "";
+            if (!operationId) return;
+
+            const methodUpper = String(method).toUpperCase();
+            const summary = String(op.summary || "").trim();
+            const tags = Array.isArray(op.tags) ? op.tags.join(" ") : "";
+
+            const href = `#/operations/${encodeURIComponent(operationId)}`;
+
+            const label = `${methodUpper} ${path}${summary ? ` - ${summary}` : ""}`;
+            next.push({
+              href,
+              label,
+              method: methodUpper,
+              path,
+              summary,
+              tags
+            });
+          });
+        });
+
+        routeIndex = next;
+      }
+
+      fetch("stoplight.json")
+        .then((res) => res.json())
+        .then((spec) => {
+          buildRouteIndexFromSpec(spec);
+        })
+        .catch(() => {
+          routeIndex = [];
+        });
+
+      function renderResults(term) {
+        const q = term.trim().toLowerCase();
+        clearSearchBtn.style.display = q ? "inline-flex" : "none";
+
+        if (!q) {
+          searchResults.style.display = "none";
+          searchResults.innerHTML = "";
+          return;
+        }
+
+        const matches = routeIndex
+          .filter((item) => {
+            const haystack = `${item.label} ${item.tags}`.toLowerCase();
+            return haystack.includes(q);
+          })
+          .slice(0, 50);
+
+        if (!matches.length) {
+          searchResults.innerHTML = '<div class="search-meta">0 results</div><div class="result-summary" style="padding:8px 10px;">No matches found</div>';
+          searchResults.style.display = "block";
+          return;
+        }
+
+        searchResults.innerHTML = `<div class="search-meta">${matches.length} result${matches.length > 1 ? "s" : ""}</div>` + matches.map((item) => (
+          `<button class="search-result" data-href="${item.href}">` +
+            `<div class="result-path">${item.method} ${item.path}</div>` +
+            `<div class="result-summary">${item.summary || item.tags || "Open in Stoplight"}</div>` +
+          `</button>`
+        )).join("");
+
+        searchResults.style.display = "block";
+      }
+
+      searchInput.addEventListener("input", (event) => {
+        renderResults(event.target.value);
+      });
+
+      clearSearchBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        clearSearchBtn.style.display = "none";
+        searchResults.style.display = "none";
+        searchResults.innerHTML = "";
+        searchInput.focus();
+      });
+
+      searchResults.addEventListener("click", (event) => {
+        const button = event.target.closest(".search-result");
+        if (!button) return;
+
+        const href = button.getAttribute("data-href");
+        if (!href) return;
+        location.hash = href;
+        searchResults.style.display = "none";
+      });
+
+      searchInput.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          searchResults.style.display = "none";
+          return;
+        }
+
+        if (event.key !== "Enter") return;
+        const first = searchResults.querySelector(".search-result");
+        if (!first) return;
+
+        const href = first.getAttribute("data-href");
+        if (!href) return;
+        location.hash = href;
+        searchResults.style.display = "none";
+      });
+
+      document.addEventListener("click", (event) => {
+        const withinSearch = event.target.closest(".search-shell");
+        if (!withinSearch) {
+          searchResults.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
