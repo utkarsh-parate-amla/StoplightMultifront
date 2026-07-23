@@ -166,6 +166,8 @@
       const clearSearchBtn = document.getElementById("clearSearch");
       const searchShell = document.querySelector(".search-shell");
       let routeIndex = [];
+      let indexReady = false;
+      let indexError = false;
 
       function placeSearchInsideSidebar() {
         const sidebar = document.querySelector(".sl-flex.sl-overflow-y-auto.sl-flex-col.sl-sticky.sl-inset-y-0.sl-pt-8.sl-bg-canvas-100.sl-border-r");
@@ -218,9 +220,13 @@
         .then((res) => res.json())
         .then((spec) => {
           buildRouteIndexFromSpec(spec);
+          indexReady = true;
+          indexError = false;
         })
         .catch(() => {
           routeIndex = [];
+          indexReady = true;
+          indexError = true;
         });
 
       function renderResults(term) {
@@ -230,6 +236,18 @@
         if (!q) {
           searchResults.style.display = "none";
           searchResults.innerHTML = "";
+          return;
+        }
+
+        if (!indexReady) {
+          searchResults.innerHTML = '<div class="search-meta">Building search index...</div>';
+          searchResults.style.display = "block";
+          return;
+        }
+
+        if (indexError) {
+          searchResults.innerHTML = '<div class="search-meta">Search unavailable: unable to read stoplight.json</div>';
+          searchResults.style.display = "block";
           return;
         }
 
