@@ -44,6 +44,13 @@
         gap: 8px;
       }
 
+      .search-build {
+        margin-top: 6px;
+        font-size: 10px;
+        color: var(--search-muted);
+        text-align: right;
+      }
+
       .search-icon {
         color: var(--search-muted);
         font-size: 14px;
@@ -148,6 +155,7 @@
           >
           <button id="clearSearch" class="search-clear" type="button" aria-label="Clear search">&times;</button>
         </div>
+        <div id="searchBuild" class="search-build"></div>
         <div id="searchResults" class="search-results"></div>
       </div>
     </div>
@@ -164,10 +172,16 @@
       const searchInput = document.getElementById("opSearch");
       const searchResults = document.getElementById("searchResults");
       const clearSearchBtn = document.getElementById("clearSearch");
+      const searchBuild = document.getElementById("searchBuild");
       const searchShell = document.querySelector(".search-shell");
+      const SEARCH_BUILD = "2026-07-23.2";
       let routeIndex = [];
       let indexReady = false;
       let indexError = false;
+
+      if (searchBuild) {
+        searchBuild.textContent = `Search build ${SEARCH_BUILD}`;
+      }
 
       function placeSearchInsideSidebar() {
         const sidebar = document.querySelector(".sl-flex.sl-overflow-y-auto.sl-flex-col.sl-sticky.sl-inset-y-0.sl-pt-8.sl-bg-canvas-100.sl-border-r");
@@ -188,18 +202,41 @@
         const paths = spec && spec.paths ? spec.paths : {};
         const next = [];
 
+        function fallbackPathHash(path, method) {
+          const rawSegments = String(path || "").split("/").filter(Boolean);
+          const parts = rawSegments.map((segment) => {
+            const paramMatch = segment.match(/^\{(.+)\}$/);
+            return {
+              value: paramMatch ? paramMatch[1] : segment,
+              isParam: Boolean(paramMatch)
+            };
+          });
+
+          if (!parts.length) {
+            return `#/paths/root/${String(method || "get").toLowerCase()}`;
+          }
+
+          let slug = parts[0].value;
+          for (let i = 1; i < parts.length; i++) {
+            const sep = parts[i - 1].isParam && parts[i].isParam ? "---" : "-";
+            slug += `${sep}${parts[i].value}`;
+          }
+
+          return `#/paths/${slug}/${String(method || "get").toLowerCase()}`;
+        }
+
         Object.entries(paths).forEach(([path, methods]) => {
           Object.entries(methods || {}).forEach(([method, op]) => {
             if (!op || typeof op !== "object") return;
 
             const operationId = op.operationId ? String(op.operationId) : "";
-            if (!operationId) return;
-
             const methodUpper = String(method).toUpperCase();
             const summary = String(op.summary || "").trim();
             const tags = Array.isArray(op.tags) ? op.tags.join(" ") : "";
 
-            const href = `#/operations/${encodeURIComponent(operationId)}`;
+            const href = operationId
+              ? `#/operations/${encodeURIComponent(operationId)}`
+              : fallbackPathHash(path, method);
 
             const label = `${methodUpper} ${path}${summary ? ` - ${summary}` : ""}`;
             next.push({
@@ -216,7 +253,7 @@
         routeIndex = next;
       }
 
-      fetch("stoplight.json")
+      fetch(`stoplight.json?v=${encodeURIComponent(SEARCH_BUILD)}`)
         .then((res) => res.json())
         .then((spec) => {
           buildRouteIndexFromSpec(spec);
