@@ -51,6 +51,13 @@
         text-align: right;
       }
 
+      .search-status {
+        margin-top: 2px;
+        font-size: 10px;
+        color: var(--search-muted);
+        text-align: right;
+      }
+
       .search-icon {
         color: var(--search-muted);
         font-size: 14px;
@@ -111,6 +118,9 @@
       }
 
       .search-result {
+        display: block;
+        text-decoration: none;
+        color: inherit;
         border: 0;
         background: transparent;
         width: 100%;
@@ -156,6 +166,7 @@
           <button id="clearSearch" class="search-clear" type="button" aria-label="Clear search">&times;</button>
         </div>
         <div id="searchBuild" class="search-build"></div>
+        <div id="searchStatus" class="search-status"></div>
         <div id="searchResults" class="search-results"></div>
       </div>
     </div>
@@ -173,15 +184,21 @@
       const searchResults = document.getElementById("searchResults");
       const clearSearchBtn = document.getElementById("clearSearch");
       const searchBuild = document.getElementById("searchBuild");
+      const searchStatus = document.getElementById("searchStatus");
       const searchShell = document.querySelector(".search-shell");
-      const SEARCH_BUILD = "2026-07-23.2";
+      const SEARCH_BUILD = "2026-07-23.3";
       let routeIndex = [];
       let indexReady = false;
       let indexError = false;
 
+      function setStatus(text) {
+        if (searchStatus) searchStatus.textContent = text;
+      }
+
       if (searchBuild) {
         searchBuild.textContent = `Search build ${SEARCH_BUILD}`;
       }
+      setStatus("Loading endpoints...");
 
       function placeSearchInsideSidebar() {
         const sidebar = document.querySelector(".sl-flex.sl-overflow-y-auto.sl-flex-col.sl-sticky.sl-inset-y-0.sl-pt-8.sl-bg-canvas-100.sl-border-r");
@@ -251,6 +268,7 @@
         });
 
         routeIndex = next;
+        setStatus(`Indexed ${routeIndex.length} endpoints`);
       }
 
       fetch(`stoplight.json?v=${encodeURIComponent(SEARCH_BUILD)}`)
@@ -264,6 +282,7 @@
           routeIndex = [];
           indexReady = true;
           indexError = true;
+          setStatus("Index failed to load");
         });
 
       function renderResults(term) {
@@ -302,10 +321,10 @@
         }
 
         searchResults.innerHTML = `<div class="search-meta">${matches.length} result${matches.length > 1 ? "s" : ""}</div>` + matches.map((item) => (
-          `<button class="search-result" data-href="${item.href}">` +
+          `<a class="search-result" href="${item.href}">` +
             `<div class="result-path">${item.method} ${item.path}</div>` +
             `<div class="result-summary">${item.summary || item.tags || "Open in Stoplight"}</div>` +
-          `</button>`
+          `</a>`
         )).join("");
 
         searchResults.style.display = "block";
@@ -324,12 +343,8 @@
       });
 
       searchResults.addEventListener("click", (event) => {
-        const button = event.target.closest(".search-result");
-        if (!button) return;
-
-        const href = button.getAttribute("data-href");
-        if (!href) return;
-        location.hash = href;
+        const link = event.target.closest(".search-result");
+        if (!link) return;
         searchResults.style.display = "none";
       });
 
@@ -343,7 +358,7 @@
         const first = searchResults.querySelector(".search-result");
         if (!first) return;
 
-        const href = first.getAttribute("data-href");
+        const href = first.getAttribute("href");
         if (!href) return;
         location.hash = href;
         searchResults.style.display = "none";
