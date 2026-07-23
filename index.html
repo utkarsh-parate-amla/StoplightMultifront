@@ -24,10 +24,11 @@
         position: sticky;
         top: 8px;
         left: 0;
-        z-index: 5;
+        z-index: 30;
         width: auto;
         margin: 0 8px 8px;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        pointer-events: auto;
       }
 
       .search-card {
@@ -36,6 +37,7 @@
         border-radius: 12px;
         box-shadow: 0 6px 22px var(--search-shadow);
         padding: 8px;
+        pointer-events: auto;
       }
 
       .search-row {
@@ -74,6 +76,7 @@
         font-size: 13px;
         box-sizing: border-box;
         outline: none;
+        pointer-events: auto;
       }
 
       .search-input:focus {
@@ -334,6 +337,15 @@
         renderResults(event.target.value);
       });
 
+      // Clicking anywhere on the search card should activate typing in the input.
+      searchShell.addEventListener("mousedown", (event) => {
+        const isResult = event.target.closest(".search-result");
+        const isClear = event.target.closest("#clearSearch");
+        const isInput = event.target.closest("#opSearch");
+        if (isResult || isClear || isInput) return;
+        searchInput.focus();
+      });
+
       clearSearchBtn.addEventListener("click", () => {
         searchInput.value = "";
         clearSearchBtn.style.display = "none";
@@ -369,6 +381,27 @@
         if (!withinSearch) {
           searchResults.style.display = "none";
         }
+      });
+
+      // If user starts typing while search is unfocused, move focus and type into search.
+      document.addEventListener("keydown", (event) => {
+        if (event.defaultPrevented) return;
+        if (event.ctrlKey || event.metaKey || event.altKey) return;
+
+        const target = event.target;
+        const typingInField = target && (
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable
+        );
+
+        if (typingInField) return;
+        if (event.key.length !== 1) return;
+
+        searchInput.focus();
+        searchInput.value += event.key;
+        renderResults(searchInput.value);
+        event.preventDefault();
       });
     </script>
   </body>
