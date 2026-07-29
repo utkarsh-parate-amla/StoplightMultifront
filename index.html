@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:image" content="https://www.znode.com/images/znode/logo-znode.svg?v=1">
+    <link rel="icon" type="image/png" href="https://www.znode.com/favicons/znode/favicon-16x16.png">
     <title>API Documentation</title>
     <script src="https://unpkg.com/@stoplight/elements@8.0.0/web-components.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements@8.0.0/styles.min.css">
@@ -44,6 +46,7 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        cursor: text;
       }
 
       .search-card:focus-within {
@@ -54,6 +57,7 @@
         color: var(--search-muted);
         font-size: 14px;
         user-select: none;
+        cursor: text;
       }
 
       .search-input {
@@ -67,9 +71,12 @@
         box-sizing: border-box;
         outline: none;
         pointer-events: auto;
+        cursor: text;
+        transition: background-color 120ms ease, border-color 120ms ease;
       }
 
-      .search-input:focus {
+      .search-input:focus,
+      .search-card.is-active .search-input {
         border-color: var(--search-accent);
         background: #ffffff;
       }
@@ -175,16 +182,27 @@
       const searchResults = document.getElementById("searchResults");
       const clearSearchBtn = document.getElementById("clearSearch");
       const searchShell = document.querySelector(".search-shell");
+      const searchCard = document.querySelector(".search-card");
       const SEARCH_BUILD = "2026-07-23.3";
       let routeIndex = [];
       let indexReady = false;
       let indexError = false;
 
+      function setSearchActive(isActive) {
+        if (!searchCard) return;
+        searchCard.classList.toggle("is-active", isActive);
+      }
+
       function placeSearchInsideSidebar() {
         const sidebar = document.querySelector(".sl-flex.sl-overflow-y-auto.sl-flex-col.sl-sticky.sl-inset-y-0.sl-pt-8.sl-bg-canvas-100.sl-border-r");
         if (!sidebar || !searchShell) return;
         if (!sidebar.contains(searchShell)) {
+          const shouldRestoreFocus = document.activeElement === searchInput || (searchCard && searchCard.classList.contains("is-active"));
           sidebar.prepend(searchShell);
+          if (shouldRestoreFocus) {
+            setSearchActive(true);
+            searchInput.focus({ preventScroll: true });
+          }
         }
       }
 
@@ -312,12 +330,32 @@
         renderResults(event.target.value);
       });
 
+      searchInput.addEventListener("focus", () => {
+        setSearchActive(true);
+      });
+
+      searchInput.addEventListener("blur", () => {
+        setTimeout(() => {
+          const stillInside = searchShell.contains(document.activeElement);
+          if (!stillInside) setSearchActive(false);
+        }, 0);
+      });
+
       // Clicking anywhere on the search card should activate typing in the input.
       searchShell.addEventListener("mousedown", (event) => {
         const isResult = event.target.closest(".search-result");
         const isClear = event.target.closest("#clearSearch");
         const isInput = event.target.closest("#opSearch");
         if (isResult || isClear || isInput) return;
+        setSearchActive(true);
+        searchInput.focus();
+      });
+
+      searchShell.addEventListener("click", (event) => {
+        const isResult = event.target.closest(".search-result");
+        const isClear = event.target.closest("#clearSearch");
+        if (isResult || isClear) return;
+        setSearchActive(true);
         searchInput.focus();
       });
 
@@ -355,6 +393,7 @@
         const withinSearch = event.target.closest(".search-shell");
         if (!withinSearch) {
           searchResults.style.display = "none";
+          setSearchActive(false);
         }
       });
 
