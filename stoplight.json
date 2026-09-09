@@ -48772,7 +48772,7 @@
               "type": "string",
               "example": "ProductImages"
             },
-            "description": "The name of the media folder to synchronize. Provide the exact folder name as it appears in the media server configuration. This field is required.\r\n\r\n**Admin Sandbox URL:** [MediaManager/MediaManager/List](https://admin-z10-sandbox.znodestore.com/MediaManager/MediaManager/List?folderId=1&displayMode=List)\r\n\r\n**How to Retrieve:**\r\n1. Go to DAM, then select Media Explorer in the Admin panel.\r\n2. Locate the desired media.\r\n3. Note the value in the Folder column."
+            "description": "The name of the media folder to synchronize. Provide the exact folder name as it appears in the media server configuration. This field is required.\r\n\r\nIf an empty string is provided, the synchronization runs on the entire Znode10 container instead of a single folder.\r\n\r\n**Admin Sandbox URL:** [MediaManager/MediaManager/List](https://admin-z10-sandbox.znodestore.com/MediaManager/MediaManager/List?folderId=1&displayMode=List)\r\n\r\n**How to Retrieve:**\r\n1. Go to DAM, then select Media Explorer in the Admin panel.\r\n2. Locate the desired media.\r\n3. Note the value in the Folder column."
           },
           {
             "name": "expand",
