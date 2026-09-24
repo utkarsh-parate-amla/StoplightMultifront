@@ -51568,7 +51568,7 @@
         "x-stoplight": {
           "id": "kx6l6hwghuyh"
         },
-        "description": "Retrieves a paginated list of PIM attributes configured in the catalog. Supports filtering, sorting, and pagination for flexible retrieval of results. Use the expand parameter to include additional related data such as attribute locales, attribute types, group assignments, default values, and attribute families in the response.\n\n**Workflow:**\n\n1. Use the **[CreatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)** API to create a new PIM attribute.\n2. After successfully creating the attribute, use the **[SaveLocale](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)** API to add or update the localized attribute name and description.\n3. To update the core configuration of an existing PIM attribute, use the **[UpdatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)** API.\n4. To retrieve a list of PIM attributes, use the **[PimAttributeList](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)** API.\n5. To retrieve the details of a specific PIM attribute, use the **[GetPimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** API.\n6. To delete a PIM attribute, use the **[DeletePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Delete/post)** API.\r\n\r\n---\n\n### Filter Support\n\n**Filter Format:**  \n`filter={Field}~{Operator}~{Value}`\n\n**Supported Filter Fields & Operators:**\n\n| Field | Supported Operators |\n|-------|---------------------|\n| AttributeTypeId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| InputValidationId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| IsPimAttributeType | is (Is) |\n| LocaleId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PimAttributeDefaultValueId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PimAttributeId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PIMAttributeFamilyId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PIMAttributeGroupId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| IsActive | is (Is) |\n\n**Example:**\n- `filter=PimAttributeId~eq~142`\n\nFor the full list of operators and usage examples, see [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting).\r\n\r\n---\n\n### Sort Support\n\n**Format:** `sort={Field}~{asc|desc}`\n\n**Supported Sort Fields:**\n\n| Field | Description |\n|-------|-------------|\n| AttributeTypeId | Sort by the attribute type identifier. |\n| InputValidationId | Sort by the input validation identifier. |\n| IsPimAttributeType | Sort by whether the attribute is a PIM attribute type. |\n| LocaleId | Sort by the locale identifier. |\n| PimAttributeDefaultValueId | Sort by the attribute default value identifier. |\n| PimAttributeId | Sort by the attribute identifier. |\n| PIMAttributeFamilyId | Sort by the attribute family identifier. |\n| PIMAttributeGroupId | Sort by the attribute group identifier. |\n| IsActive | Sort by the active status of the attribute. |\n\n**Example:**\n- `sort=PimAttributeId~asc`\r\n\r\n---\n\n### Expand Support\n\nSpecifies which additional related resources to include in the response. Multiple values can be specified by repeating the parameter (e.g. `expand=Value1&expand=Value2`).\n\n**Supported Expand Values:**\n\n| Value | Description |\n|-------|-------------|\n| ZnodePimAttributeGroupMappers | Includes the full list of attribute group mapper objects associated with each attribute. |\n| ZnodePimDefaultAttributeValues | Includes the default selectable values for Select, Multi-Select, and Swatch type attributes. |\n| attributelocale | Includes the locale-specific name and description translations for each attribute. |\n| attributetype | Includes the attribute type details such as the type name and configuration options. |\n| pimattributegroup | Includes information about the attribute group each attribute is assigned to. |\n| attributes | Includes the full attribute configuration details in the response. |\n| groupmappers | Includes the attribute-to-group mapping data showing which groups each attribute belongs to. |\n| pimgrouplocale | Includes locale translations for the parent attribute group. |\n| attributefamily | Includes the attribute family associations for each attribute. |\n\n**Example:**\n- `[\"attributelocale\", \"attributetype\"]`\r\n\r\n---\n\n### Related APIs\n\n- **`GET`** [Retrieve a PIM attribute by ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)\n- **`POST`** [Create a PIM attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)\n- **`PUT`** [Update attribute data](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)\n- **`POST`** [Save attribute locale values](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)"
+        "description": "Retrieves a paginated list of PIM attributes configured in the catalog. Supports filtering, sorting, and pagination for flexible retrieval of results. Use the expand parameter to include additional related data such as attribute locales, attribute types, group assignments, default values, and attribute families in the response.\n\n**Workflow:**\n\n1. Use the **[CreatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)** API to create a new PIM attribute.\n2. After successfully creating the attribute, use the **[SaveLocale](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)** API to add or update the localized attribute name and description.\n3. To update the core configuration of an existing PIM attribute, use the **[UpdatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)** API.\n4. To retrieve a list of PIM attributes, use the **[PimAttributeList](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)** API.\n5. To retrieve the details of a specific PIM attribute, use the **[GetPimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** API.\n6. To delete a PIM attribute, use the **[DeletePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Delete/post)** API.\n\n---\n\n### Filter Support\n\n**Filter Format:**  \n`filter={Field}~{Operator}~{Value}`\n\n**Supported Filter Fields & Operators:**\n\n| Field | Supported Operators |\n|-------|---------------------|\n| AttributeTypeId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| InputValidationId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| IsPimAttributeType | is (Is) |\n| LocaleId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PimAttributeDefaultValueId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PimAttributeId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PIMAttributeFamilyId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PIMAttributeGroupId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| IsActive | is (Is) |\n| IsReturnAllColumns | eq (Equals) |\n\n**Example:**\n- `filter=PimAttributeId~eq~142`\n- `filter=IsReturnAllColumns~eq~true`\n\n**Note:**\n* If the `IsReturnAllColumns` filter is set to `true`, the API retrieves all product attribute columns along with their corresponding values.\n* If the `IsReturnAllColumns` filter is set to `false`, the API returns only a limited set of product attribute columns along with their corresponding values.\n* If the `IsReturnAllColumns` filter is not passed, the API retrieves all product attribute fields; however, fields such as `IsShowOnGrid`, `IsSwatch`, `RegExpression`, and `ValidationRule` are returned with null values, even when values are configured for these attribute fields. To retrieve the configured values for these attribute fields, the `IsReturnAllColumns` filter must be set to true.\n\nFor the full list of operators and usage examples, see [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting).\n\n---\n\n### Sort Support\n\n**Format:** `sort={Field}~{asc|desc}`\n\n**Supported Sort Fields:**\n\n| Field | Description |\n|-------|-------------|\n| AttributeTypeId | Sort by the attribute type identifier. |\n| InputValidationId | Sort by the input validation identifier. |\n| IsPimAttributeType | Sort by whether the attribute is a PIM attribute type. |\n| LocaleId | Sort by the locale identifier. |\n| PimAttributeDefaultValueId | Sort by the attribute default value identifier. |\n| PimAttributeId | Sort by the attribute identifier. |\n| PIMAttributeFamilyId | Sort by the attribute family identifier. |\n| PIMAttributeGroupId | Sort by the attribute group identifier. |\n| IsActive | Sort by the active status of the attribute. |\n\n**Example:**\n- `sort=PimAttributeId~asc`\n\n---\n\n### Expand Support\n\nSpecifies which additional related resources to include in the response. Multiple values can be specified by repeating the parameter (e.g. `expand=Value1&expand=Value2`).\n\n**Supported Expand Values:**\n\n| Value | Description |\n|-------|-------------|\n| ZnodePimAttributeGroupMappers | Includes the full list of attribute group mapper objects associated with each attribute. |\n| ZnodePimDefaultAttributeValues | Includes the default selectable values for Select, Multi-Select, and Swatch type attributes. |\n| attributelocale | Includes the locale-specific name and description translations for each attribute. |\n| attributetype | Includes the attribute type details such as the type name and configuration options. |\n| pimattributegroup | Includes information about the attribute group each attribute is assigned to. |\n| attributes | Includes the full attribute configuration details in the response. |\n| groupmappers | Includes the attribute-to-group mapping data showing which groups each attribute belongs to. |\n| pimgrouplocale | Includes locale translations for the parent attribute group. |\n| attributefamily | Includes the attribute family associations for each attribute. |\n\n**Example:**\n- `[\"attributelocale\", \"attributetype\"]`\n\n---\n\n### Related APIs\n\n- **`GET`** [Retrieve a PIM attribute by ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)\n- **`POST`** [Create a PIM attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)\n- **`PUT`** [Update attribute data](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)\n- **`POST`** [Save attribute locale values](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)"
       }
     },
     "/PIMAttribute/Get/{id}": {
@@ -67106,103 +67106,58 @@
         "tags": [
           "Products"
         ],
-        "summary": "Assign personalized attributes to a product",
-        "parameters": [
-          {
-            "name": "expand",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "attributelocale",
-                  "pricing",
-                  "inventory",
-                  "category",
-                  "catalog",
-                  "product",
-                  "promotions",
-                  "productreviews",
-                  "SEOUrl",
-                  "producttemplate",
-                  "swatch_",
-                  "attributes",
-                  "additional-attributes"
-                ]
-              },
-              "example": [
-                "attributelocale"
-              ]
-            },
-            "description": "Specifies which additional related resources to include in the response. Multiple values can be specified by repeating the parameter (e.g. `expand=Value1&expand=Value2`)."
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Znode.Libraries.Abstract.Helper.FilterTuple"
-              },
-              "example": [
-                {
-                  "FilterName": "Status",
-                  "FilterOperator": "eq",
-                  "FilterValue": "Active"
-                }
-              ]
-            },
-            "description": "Collection of filter conditions to narrow down the result set. Multiple filters are combined with AND logic. Format: `filter={Field}~{Operator}~{Value}`. For complete filter syntax, supported operators, pagination, and sorting usage, see [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting)."
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string",
-                "enum": [
-                  "asc",
-                  "desc"
-                ]
-              },
-              "example": {
-                "Status": "asc"
-              }
-            },
-            "description": "Sorting configuration for the result set. Supports ascending and descending order. Format: `sort={field}~{asc|desc}`. For complete filter syntax, supported operators, pagination, and sorting usage, see [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting)."
-          },
-          {
-            "name": "pageIndex",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 1,
-              "default": 1,
-              "example": 1
-            },
-            "description": "The 1-based page number for paginated results. Use in conjunction with `pageSize` to navigate through large datasets. See [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting) for details."
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 1,
-              "default": 10,
-              "example": 10
-            },
-            "description": "Number of records to return per page. Controls the batch size for paginated requests. See [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting) for details."
-          }
-        ],
+        "summary": "Assign personalized attributes to a product.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Znode.Engine.Api.Models.PIMAttributeValueListModel"
+              },
+              "example": {
+                "AttributeValues": [
+                  {
+                    "PimAttributeValueId": 0,
+                    "PimAttributeFamilyId": null,
+                    "PimProductId": 15881,
+                    "PimAttributeId": 1272,
+                    "PimAttributeDefaultValueId": null,
+                    "AttributeCode": null,
+                    "CreatedBy": 0,
+                    "CreatedDate": "0001-01-01T00:00:00",
+                    "ModifiedBy": 0,
+                    "ModifiedDate": "0001-01-01T00:00:00",
+                    "ActionMode": null,
+                    "Custom1": null,
+                    "Custom2": null,
+                    "Custom3": null,
+                    "Custom4": null,
+                    "Custom5": null
+                  }
+                ],
+                "Filter": [
+                  {
+                    "FilterName": "LocaleId",
+                    "FilterOperator": "eq",
+                    "FilterValue": "1",
+                    "Item1": "LocaleId",
+                    "Item2": "eq",
+                    "Item3": "1"
+                  }
+                ],
+                "PageIndex": null,
+                "PageSize": null,
+                "TotalResults": null,
+                "TotalPages": null,
+                "CreatedBy": 0,
+                "CreatedDate": "0001-01-01T00:00:00",
+                "ModifiedBy": 0,
+                "ModifiedDate": "0001-01-01T00:00:00",
+                "ActionMode": null,
+                "Custom1": null,
+                "Custom2": null,
+                "Custom3": null,
+                "Custom4": null,
+                "Custom5": null
               }
             }
           }
@@ -67245,7 +67200,7 @@
         "x-stoplight": {
           "id": "udcaux0l1qsw"
         },
-        "description": "Assigns one or more personalized attributes to a product. Personalized attributes allow customers to customize product options during the order process.\r\n\r\n---\r\n\r\n### Filter Support\n\n**Filter Format:**\n`filter={Field}~{Operator}~{Value}`\n\n**Supported Filter Fields & Operators:**\n\n| Field | Supported Operators |\n|-------|---------------------|\n| PimProductId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| SKU | cn (Contains), eq (Equals), ew (EndsWith), ne (NotEquals), sw (StartsWith), ncn (NotContains) |\n| ProductName | cn (Contains), eq (Equals), ew (EndsWith), ne (NotEquals), sw (StartsWith), ncn (NotContains) |\n| IsActive | is (Is) |\n| CategoryId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| CatalogId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PortalId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n\n**Example:**\n- `filter=PimProductId~cn~example`\n\nFor the full list of operators and usage examples, see [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting).\r\n\r\n---\r\n\r\n### Sort Support\n\n**Format:** `sort={Field}~{asc|desc}`\n\n**Supported Sort Fields:**\n\n| Field | Description |\n|-------|-------------|\n| PimProductId | Sort by the pimproduct identifier value. |\n| SKU | Sort by the sku value. |\n| ProductName | Sort by the product name value. |\n| IsActive | Sort by the isactive value. |\n| CategoryId | Sort by the category identifier value. |\n| CatalogId | Sort by the catalog identifier value. |\n| PortalId | Sort by the portal identifier value. |\n\n**Example:**\n- `sort=PimProductId~asc`\r\n\r\n---\r\n\r\n### Expand Support\n\nSpecifies which additional related resources to include in the response. Multiple values can be specified by repeating the parameter (e.g. `expand=Value1&expand=Value2`).\n\n**Supported Expand Values:**\n\n| Value | Description |\n|-------|-------------|\n| attributelocale | Includes attributelocale details in the response. |\n| pricing | Includes pricing details in the response. |\n| inventory | Includes inventory details in the response. |\n| category | Includes category details in the response. |\n| catalog | Includes catalog details in the response. |\n| product | Includes product details in the response. |\n| promotions | Includes promotions details in the response. |\n| productreviews | Includes productreviews details in the response. |\n| SEOUrl | Includes seourl details in the response. |\n| producttemplate | Includes producttemplate details in the response. |\n| swatch_ | Includes swatch  details in the response. |\n| attributes | Includes attributes details in the response. |\n| additional-attributes | Includes additional-attributes details in the response. |\n\n**Example:**\n- `[\"attributelocale\"]`"
+        "description": "Assigns one or more personalized attributes to a product. Personalized attributes allow customers to customize product options during the order process. Duplicate assignments are skipped. Returns a true or false success result.\r\n\r\n---\r\n\r\n### Note:\r\n\r\nThe following parameters are required in the request body:\r\n\r\n**Required Parameters**\r\n\r\n* `PimProductId`\r\n* `PimAttributeId`\r\n\r\n**Required LocaleId Filter**\r\n\r\nThis API supports LocaleId through the Filter object in the request body. LocaleId must be provided as a required filter value.\r\n\r\n### Filter Configuration\r\n\r\n| Field | Value | Required |\r\n| ----- | ----- | -------- |\r\n| `FilterName` | `LocaleId` | Yes |\r\n| `FilterOperator` | `eq` (Equals) | Yes |\r\n| `FilterValue` | `1` | Yes |\r\n\r\n### Example Request Body\r\n\r\n```json\r\n{\r\n  \"AttributeValues\": [\r\n    {\r\n      \"PimProductId\": 15881,\r\n      \"PimAttributeId\": 1272\r\n    }\r\n  ],\r\n  \"Filter\": [\r\n    {\r\n      \"FilterName\": \"LocaleId\",\r\n      \"FilterOperator\": \"eq\",\r\n      \"FilterValue\": \"1\"\r\n    }\r\n  ]\r\n}\r\n```\r\n\r\n---\r\n\r\n### Related APIs\r\n\r\n- **`GET`** [List products with assigned personalized attributes](https://apidocs-v1.znode.com/#/paths/Products-GetAssignedPersonalizedAttributes/get)\r\n- **`GET`** [List unassigned personalized attributes for a product](https://apidocs-v1.znode.com/#/paths/Products-GetUnassignedPersonalizedAttributes/get)\r\n- **`POST`** [Remove personalized attributes from a product](https://apidocs-v1.znode.com/#/paths/Products-UnassignPersonalizedAttributes-{parentProductId}/post)"
       }
     },
     "/Products/UnassignPersonalizedAttributes/{parentProductId}": {
@@ -106733,9 +106688,13 @@
           },
           "DisplayType": {
             "type": "string",
-            "nullable": true,
+            "enum": [
+              "CheckBox",
+              "RadioButton",
+              "DropDown"
+            ],
             "description": "The display type for the add-on group. Controls how add-on options are presented on the product page.\n\n**Admin Sandbox URL:** [PIM / Addon Group / List](https://admin-z10-sandbox.znodestore.com/PIM/AddonGroup/List)\n\n**How to Retrieve:**\n1. Navigate to [PIM / Addon Group / List](https://admin-z10-sandbox.znodestore.com/PIM/AddonGroup/List).\n2. The **Display Type** column contains the value.\n\n**Knowledgebase:** [Managing and Configuring Add-On Groups](https://support.znode.com/support/solutions/articles/43000756845-managing-and-configuring-add-on-groups)",
-            "example": "Standard"
+            "example": "CheckBox"
           },
           "PimAddonProductId": {
             "type": "integer",
@@ -141981,6 +141940,16 @@
             "format": "int32",
             "description": "Read-only count of products currently using this attribute. Populated in responses; not required on create/update.",
             "example": 25
+          },
+          "ValidationRule": {
+            "type": "string",
+            "description": "Represents the validation rules for Text-type product attributes.",
+            "example": "Alphanumeric"
+          },
+          "RegExpression": {
+            "type": "string",
+            "description": "Represents the selected regular expression for the validation rules of Text-type product attributes.",
+            "example": "^[a-zA-Z0-9][a-zA-Z0-9]*$"
           }
         }
       },
