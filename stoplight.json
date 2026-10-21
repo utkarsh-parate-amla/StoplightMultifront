@@ -48790,6 +48790,16 @@
                 "mediaserver"
               ]
             }
+          },
+          {
+            "name": "Znode-UserId",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "2"
+            },
+            "required": true,
+            "description": "The unique identifier of the authenticated user making the request. Provide the actual UserId.\n\n**Note:** The value of **Znode-UserId** is the same as the **UserId** displayed in the Admin application.\n\n**Admin Sandbox URL:** [Accounts & Users / Users](https://admin-z10-sandbox.znodestore.com/Customer/CustomersList)\n\n**How to Retrieve:**\n1. Go to Accounts and Users, then select Users in the Admin panel.\n2. Edit the desired user.\n3. Check the browser URL and locate `UserId=`.\n4. The value next to it is the UserId.\n\n**Knowledgebase:** [Managing Users](https://support.znode.com/support/solutions/articles/43000756944-managing-users)"
           }
         ],
         "responses": {
@@ -51445,31 +51455,6 @@
         "summary": "List PIM attributes",
         "parameters": [
           {
-            "name": "expand",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "ZnodePimAttributeGroupMappers",
-                  "ZnodePimDefaultAttributeValues",
-                  "attributelocale",
-                  "attributetype",
-                  "pimattributegroup",
-                  "attributes",
-                  "groupmappers",
-                  "pimgrouplocale",
-                  "attributefamily"
-                ]
-              },
-              "example": [
-                "ZnodePimAttributeGroupMappers"
-              ]
-            },
-            "description": "Specifies which additional related resources to include in the response. Multiple values can be specified by repeating the parameter (e.g. `expand=Value1&expand=Value2`)."
-          },
-          {
             "name": "filter",
             "in": "query",
             "schema": {
@@ -51512,10 +51497,9 @@
               "type": "integer",
               "format": "int32",
               "minimum": 1,
-              "default": 1,
               "example": 1
             },
-            "description": "The 1-based page number for paginated results. Use in conjunction with `pageSize` to navigate through large datasets. See [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting) for details."
+            "description": "The 1-based page number for paginated results. Use in conjunction with `pageSize` to navigate through large datasets. See [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting) for details.\n\n**Note:** The default paging values for this API are PageIndex = 1 and PageSize = 2147483647. Users can override these defaults by providing their own PageIndex and PageSize values."
           },
           {
             "name": "pageSize",
@@ -51524,10 +51508,9 @@
               "type": "integer",
               "format": "int32",
               "minimum": 1,
-              "default": 10,
               "example": 10
             },
-            "description": "Number of records to return per page. Controls the batch size for paginated requests. See [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting) for details."
+            "description": "Number of records to return per page. Controls the batch size for paginated requests. See [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting) for details.\n\n**Note:** The default paging values for this API are PageIndex = 1 and PageSize = 2147483647. Users can override these defaults by providing their own PageIndex and PageSize values."
           }
         ],
         "responses": {
@@ -51568,7 +51551,7 @@
         "x-stoplight": {
           "id": "kx6l6hwghuyh"
         },
-        "description": "Retrieves a paginated list of PIM attributes configured in the catalog. Supports filtering, sorting, and pagination for flexible retrieval of results. Use the expand parameter to include additional related data such as attribute locales, attribute types, group assignments, default values, and attribute families in the response.\n\n**Workflow:**\n\n1. Use the **[CreatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)** API to create a new PIM attribute.\n2. After successfully creating the attribute, use the **[SaveLocale](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)** API to add or update the localized attribute name and description.\n3. To update the core configuration of an existing PIM attribute, use the **[UpdatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)** API.\n4. To retrieve a list of PIM attributes, use the **[PimAttributeList](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)** API.\n5. To retrieve the details of a specific PIM attribute, use the **[GetPimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** API.\n6. To delete a PIM attribute, use the **[DeletePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Delete/post)** API.\n\n---\n\n### Filter Support\n\n**Filter Format:**  \n`filter={Field}~{Operator}~{Value}`\n\n**Supported Filter Fields & Operators:**\n\n| Field | Supported Operators |\n|-------|---------------------|\n| AttributeTypeId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| InputValidationId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| IsPimAttributeType | is (Is) |\n| LocaleId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PimAttributeDefaultValueId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PimAttributeId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PIMAttributeFamilyId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PIMAttributeGroupId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| IsActive | is (Is) |\n| IsReturnAllColumns | eq (Equals) |\n\n**Example:**\n- `filter=PimAttributeId~eq~142`\n- `filter=IsReturnAllColumns~eq~true`\n\n**Note:**\n* If the `IsReturnAllColumns` filter is set to `true`, the API retrieves all product attribute columns along with their corresponding values.\n* If the `IsReturnAllColumns` filter is set to `false`, the API returns only a limited set of product attribute columns along with their corresponding values.\n* If the `IsReturnAllColumns` filter is not passed, the API retrieves all product attribute fields; however, fields such as `IsShowOnGrid`, `IsSwatch`, `RegExpression`, and `ValidationRule` are returned with null values, even when values are configured for these attribute fields. To retrieve the configured values for these attribute fields, the `IsReturnAllColumns` filter must be set to true.\n\nFor the full list of operators and usage examples, see [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting).\n\n---\n\n### Sort Support\n\n**Format:** `sort={Field}~{asc|desc}`\n\n**Supported Sort Fields:**\n\n| Field | Description |\n|-------|-------------|\n| AttributeTypeId | Sort by the attribute type identifier. |\n| InputValidationId | Sort by the input validation identifier. |\n| IsPimAttributeType | Sort by whether the attribute is a PIM attribute type. |\n| LocaleId | Sort by the locale identifier. |\n| PimAttributeDefaultValueId | Sort by the attribute default value identifier. |\n| PimAttributeId | Sort by the attribute identifier. |\n| PIMAttributeFamilyId | Sort by the attribute family identifier. |\n| PIMAttributeGroupId | Sort by the attribute group identifier. |\n| IsActive | Sort by the active status of the attribute. |\n\n**Example:**\n- `sort=PimAttributeId~asc`\n\n---\n\n### Expand Support\n\nSpecifies which additional related resources to include in the response. Multiple values can be specified by repeating the parameter (e.g. `expand=Value1&expand=Value2`).\n\n**Supported Expand Values:**\n\n| Value | Description |\n|-------|-------------|\n| ZnodePimAttributeGroupMappers | Includes the full list of attribute group mapper objects associated with each attribute. |\n| ZnodePimDefaultAttributeValues | Includes the default selectable values for Select, Multi-Select, and Swatch type attributes. |\n| attributelocale | Includes the locale-specific name and description translations for each attribute. |\n| attributetype | Includes the attribute type details such as the type name and configuration options. |\n| pimattributegroup | Includes information about the attribute group each attribute is assigned to. |\n| attributes | Includes the full attribute configuration details in the response. |\n| groupmappers | Includes the attribute-to-group mapping data showing which groups each attribute belongs to. |\n| pimgrouplocale | Includes locale translations for the parent attribute group. |\n| attributefamily | Includes the attribute family associations for each attribute. |\n\n**Example:**\n- `[\"attributelocale\", \"attributetype\"]`\n\n---\n\n### Related APIs\n\n- **`GET`** [Retrieve a PIM attribute by ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)\n- **`POST`** [Create a PIM attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)\n- **`PUT`** [Update attribute data](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)\n- **`POST`** [Save attribute locale values](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)"
+        "description": "Retrieves a paginated list of PIM attributes configured in the catalog. Supports filtering, sorting, and pagination for flexible retrieval of results.\n\n**Workflow:**\n\n1. Use the **[CreatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)** API to create a new PIM attribute.\n2. After successfully creating the attribute, use the **[SaveLocale](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)** API to add or update the localized attribute name and description.\n3. To update the core configuration of an existing PIM attribute, use the **[UpdatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)** API.\n4. To retrieve a list of PIM attributes, use the **[PimAttributeList](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)** API.\n5. To retrieve the details of a specific PIM attribute, use the **[GetPimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** API.\n6. To delete a PIM attribute, use the **[DeletePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Delete/post)** API.\r\n\r\n---\n\n### Filter Support\n\n**Filter Format:**  \n`filter={Field}~{Operator}~{Value}`\n\n**Supported Filter Fields & Operators:**\n\n| Field | Supported Operators |\n|-------|---------------------|\n| AttributeTypeId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| InputValidationId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| IsPimAttributeType | is (Is) |\n| LocaleId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PimAttributeDefaultValueId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PimAttributeId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PIMAttributeFamilyId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| PIMAttributeGroupId | eq (Equals), gt (GreaterThan), ge (GreaterThanOrEqual), lt (LessThan), le (LessThanOrEqual), ne (NotEquals), bw (Between) |\n| IsActive | is (Is) |\n\n**Example:**\n- `filter=PimAttributeId~eq~142`\n\nFor the full list of operators and usage examples, see [Filters, Pagination & Sorting](https://apidocs.znode.com/docs/znode-web-api/2ki8v7vm0qtpj-filters-pagination-and-sorting).\r\n\r\n---\n\n### Sort Support\n\n**Format:** `sort={Field}~{asc|desc}`\n\n**Supported Sort Fields:**\n\n| Field | Description |\n|-------|-------------|\n| AttributeTypeId | Sort by the attribute type identifier. |\n| InputValidationId | Sort by the input validation identifier. |\n| IsPimAttributeType | Sort by whether the attribute is a PIM attribute type. |\n| LocaleId | Sort by the locale identifier. |\n| PimAttributeDefaultValueId | Sort by the attribute default value identifier. |\n| PimAttributeId | Sort by the attribute identifier. |\n| PIMAttributeFamilyId | Sort by the attribute family identifier. |\n| PIMAttributeGroupId | Sort by the attribute group identifier. |\n| IsActive | Sort by the active status of the attribute. |\n\n**Example:**\n- `sort=PimAttributeId~asc`\r\n\r\n---\n\n### Related APIs\n\n- **`GET`** [Retrieve a PIM attribute by ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)\n- **`POST`** [Create a PIM attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)\n- **`PUT`** [Update attribute data](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)\n- **`POST`** [Save attribute locale values](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)"
       }
     },
     "/PIMAttribute/Get/{id}": {
@@ -51662,12 +51645,117 @@
           "PIMAttribute"
         ],
         "summary": "Create PIM attribute",
-        "description": "Creates a new Product Information Management (PIM) attribute in the Znode catalog. A PIM attribute defines a custom or system property (e.g., Color, Size, Material) that can be associated with products or categories. The request must include an AttributeModel with a unique AttributeCode (alphanumeric, max 100 characters). Optional components include FrontProperties (display and search behavior) and ValidationRule (input constraints). On success, the newly created attribute data is returned along with its assigned PimAttributeId and locale information.\n\n**Note:** Creating a PIM attribute is only the first step of the implementation workflow. After successfully creating the attribute, you must call the [SaveLocales](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post) API to persist the localized attribute information. If the SaveLocales API is not executed, the attribute may not appear correctly in the Admin panel.\n\n**Workflow:**\n\n1. Use the **[CreatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)** API to create a new PIM attribute.\n2. After successfully creating the attribute, use the **[SaveLocale](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)** API to add or update the localized attribute name and description.\n3. To update the core configuration of an existing PIM attribute, use the **[UpdatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)** API.\n4. To retrieve a list of PIM attributes, use the **[PimAttributeList](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)** API.\n5. To retrieve the details of a specific PIM attribute, use the **[GetPimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** API.\n6. To delete a PIM attribute, use the **[DeletePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Delete/post)** API.\n\n**Key field validations:**\n- `AttributeCode`: Required, alphanumeric only (`^[a-zA-Z0-9]*$`), max 100 characters, must be unique\n- `DisplayOrder`: Integer between 1 and 999\n- `AttributeTypeId`: Required; must reference a valid attribute type\n\n**Use Cases:**\n- Create a product-level attribute (set `IsCategory: false`)\n- Create a category-level attribute (set `IsCategory: true`)\n- Create a localizable attribute for multi-language storefronts (set `IsLocalizable: true`)\n- Create a filterable/faceted attribute for search and navigation (set `IsFilterable: true`, `IsFacets: true`)\r\n\r\n---\r\n\r\n### Related APIs\r\n\r\n- **`GET`** [Get attribute List](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)\r\n- **`POST`** [Create Attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)\r\n- **`DELETE`** [Delete Default Attribute Id](https://apidocs-v1.znode.com/#/paths/PIMAttribute-DeleteDefaultValues-defaultvalueId/delete)\r\n- **`PUT`** [Update attribute data](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)\r\n- **`POST`** [Save Locales](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)",
+        "description": "Creates a new Product Information Management (PIM) attribute in the Znode catalog. A PIM attribute defines a custom or system property (e.g., Color, Size, Material) that can be associated with products or categories. The request must include an AttributeModel with a unique AttributeCode (alphanumeric, max 100 characters). Optional components include FrontProperties (display and search behavior) and ValidationRule (input constraints). On success, the newly created attribute data is returned along with its assigned PimAttributeId and locale information.\n\n**Note:** Creating a PIM attribute is only the first step of the implementation workflow. After successfully creating the attribute, you must call the [SaveLocales](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post) API to persist the localized attribute information. If the SaveLocales API is not executed, the attribute may not appear correctly in the Admin panel.\n\n**Workflow:**\n\n1. Use the **[CreatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)** API to create a new PIM attribute.\n2. After successfully creating the attribute, use the **[SaveLocale](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)** API to add or update the localized attribute name and description.\n3. To update the core configuration of an existing PIM attribute, use the **[UpdatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)** API.\n4. To retrieve a list of PIM attributes, use the **[PimAttributeList](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)** API.\n5. To retrieve the details of a specific PIM attribute, use the **[GetPimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** API.\n6. To delete a PIM attribute, use the **[DeletePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Delete/post)** API.\n\n**Key field validations:**\n- `AttributeCode`: Required, alphanumeric only (`^[a-zA-Z0-9]*$`), max 100 characters, must be unique\n- `DisplayOrder`: Integer between 1 and 999\n- `AttributeTypeId`: Required; must reference a valid attribute type\n- `FrontProperties`: Required for create\n\n**Minimal request body:**\n\n<pre style=\"background-color:#ffffff;color:#111111;border:1px solid #d0d7de;padding:12px;border-radius:6px;overflow:auto;\">\n{\n  \"AttributeModel\": {\n    \"AttributeCode\": \"Color123\",\n    \"AttributeTypeId\": 1,\n    \"IsCategory\": false\n  },\n  \"FrontProperties\": {\n    \"IsComparable\": true,\n    \"IsUseInSearch\": false,\n    \"IsAllowHtmlTag\": true,\n    \"IsFacets\": false\n  }\n}\n</pre>\n\n**Use Cases:**\n- Create a product-level attribute (set `IsCategory: false`)\n- Create a category-level attribute (set `IsCategory: true`)\n- Create a localizable attribute for multi-language storefronts (set `IsLocalizable: true`)\n- Create a filterable/faceted attribute for search and navigation (set `IsFilterable: true`, `IsFacets: true`)\r\n\r\n---\r\n\r\n### Related APIs\r\n\r\n- **`GET`** [Get attribute List](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)\r\n- **`POST`** [Create Attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)\r\n- **`DELETE`** [Delete Default Attribute Id](https://apidocs-v1.znode.com/#/paths/PIMAttribute-DeleteDefaultValues-defaultvalueId/delete)\r\n- **`PUT`** [Update attribute data](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)\r\n- **`POST`** [Save Locales](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Znode.Engine.Api.Models.PIMAttributeDataModel"
+              },
+              "example": {
+                "AttributeModel": {
+                  "PimAttributeId": 0,
+                  "ParentPimAttributeId": null,
+                  "AttributeTypeId": 1,
+                  "AttributeName": null,
+                  "AttributeTypeName": null,
+                  "AttributeCode": "TestCOlorAttribute",
+                  "IsRequired": true,
+                  "IsLocalizable": true,
+                  "IsFilterable": true,
+                  "IsSystemDefined": false,
+                  "IsPersonalizable": false,
+                  "IsConfigurable": false,
+                  "AttributeGroupId": 7,
+                  "AttributeDisplayOrder": null,
+                  "HelpDescription": null,
+                  "AttributeType": null,
+                  "IsComparable": false,
+                  "IsUseInSearch": false,
+                  "IsFacets": false,
+                  "DisplayOrder": null,
+                  "IsCategory": false,
+                  "AttributeDefaultValue": "",
+                  "AttributeDefaultValueId": null,
+                  "Locales": [],
+                  "IsHidden": false,
+                  "IsShowOnGrid": false,
+                  "IsSwatch": null,
+                  "UsedInProductsCount": 0,
+                  "CreatedBy": 0,
+                  "CreatedDate": "0001-01-01T00:00:00",
+                  "ModifiedBy": 0,
+                  "ModifiedDate": "0001-01-01T00:00:00",
+                  "ActionMode": null,
+                  "Custom1": null,
+                  "Custom2": null,
+                  "Custom3": null,
+                  "Custom4": null,
+                  "Custom5": null
+                },
+                "FrontProperties": {
+                  "PimAttributeId": 0,
+                  "IsComparable": true,
+                  "IsUseInSearch": false,
+                  "IsAllowHtmlTag": false,
+                  "IsFacets": false,
+                  "CreatedBy": 0,
+                  "CreatedDate": "0001-01-01T00:00:00",
+                  "ModifiedBy": 0,
+                  "ModifiedDate": "0001-01-01T00:00:00",
+                  "ActionMode": null,
+                  "Custom1": null,
+                  "Custom2": null,
+                  "Custom3": null,
+                  "Custom4": null,
+                  "Custom5": null
+                },
+                "ValidationRule": [
+                  {
+                    "PimAttributeValidationId": 0,
+                    "PimAttributeId": null,
+                    "InputValidationId": 1,
+                    "InputValidationRuleId": null,
+                    "Name": "",
+                    "CreatedBy": 0,
+                    "CreatedDate": "0001-01-01T00:00:00",
+                    "ModifiedBy": 0,
+                    "ModifiedDate": "0001-01-01T00:00:00",
+                    "ActionMode": null,
+                    "Custom1": null,
+                    "Custom2": null,
+                    "Custom3": null,
+                    "Custom4": null,
+                    "Custom5": null
+                  },
+                  {
+                    "PimAttributeValidationId": 0,
+                    "PimAttributeId": null,
+                    "InputValidationId": 2,
+                    "InputValidationRuleId": null,
+                    "Name": "",
+                    "CreatedBy": 0,
+                    "CreatedDate": "0001-01-01T00:00:00",
+                    "ModifiedBy": 0,
+                    "ModifiedDate": "0001-01-01T00:00:00",
+                    "ActionMode": null,
+                    "Custom1": null,
+                    "Custom2": null,
+                    "Custom3": null,
+                    "Custom4": null,
+                    "Custom5": null
+                  }
+                ],
+                "CreatedBy": 0,
+                "CreatedDate": "0001-01-01T00:00:00",
+                "ModifiedBy": 0,
+                "ModifiedDate": "0001-01-01T00:00:00",
+                "ActionMode": null,
+                "Custom1": null,
+                "Custom2": null,
+                "Custom3": null,
+                "Custom4": null,
+                "Custom5": null
               }
             }
           }
@@ -51720,6 +51808,16 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Znode.Engine.Api.Models.PIMAttributeLocaleListModel"
+              },
+              "example": {
+                "AttributeCode": "Color123",
+                "Locales": [
+                  {
+                    "PimAttributeId": 1464,
+                    "LocaleId": 1,
+                    "AttributeName": "Color123"
+                  }
+                ]
               }
             }
           }
@@ -51736,7 +51834,7 @@
             }
           },
           "400": {
-            "description": "**Bad Request** - The request contains invalid data. Common causes include:\r\n- Missing or empty `AttributeCode`.\r\n- The `AttributeCode` does not match any existing PIM attribute.\r\n- The `Locales` array is empty or contains entries with missing `AttributeName` values.\r\n- An invalid or unrecognised `LocaleId` was provided.",
+            "description": "**Bad Request** - The request contains invalid data. Common causes include:\r\n- Missing or empty `AttributeCode`.\r\n- The `AttributeCode` does not match any existing PIM attribute.\r\n- The `Locales` array is empty or contains entries with missing `AttributeName` values.\r\n- `LocaleId` is missing or is not a valid locale identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -51759,7 +51857,7 @@
         "x-stoplight": {
           "id": "8e7ycxywswxg"
         },
-        "description": "Saves locale-specific name and description translations for an existing PIM attribute. The request body must include an `AttributeCode` to identify the target attribute and a `Locales` array containing one entry per language with the translated `AttributeName` and `Description` values. Use this endpoint to add or update the attribute display text for a specific language without changing the attribute's core configuration.\r\n\r\n**Note:** This API is a mandatory follow-up step after successfully creating a PIM attribute using the [Create Attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post) API. It saves the localized attribute information required by the system. If this API is not executed, the attribute may not appear correctly in the Admin panel, and subsequent attribute update APIs may not function as expected.\n\n**Workflow:**\n\n1. Use the **[CreatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)** API to create a new PIM attribute.\n2. After successfully creating the attribute, use the **[SaveLocale](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)** API to add or update the localized attribute name and description.\n3. To update the core configuration of an existing PIM attribute, use the **[UpdatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)** API.\n4. To retrieve a list of PIM attributes, use the **[PimAttributeList](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)** API.\n5. To retrieve the details of a specific PIM attribute, use the **[GetPimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** API.\n6. To delete a PIM attribute, use the **[DeletePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Delete/post)** API.\r\n\r\n---\n\n### Related APIs\n\n- **`GET`** [List all PIM attributes](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)\n- **`GET`** [Retrieve a PIM attribute by ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)\n- **`POST`** [Create a PIM attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)\n- **`PUT`** [Update attribute data](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)\n- **`DELETE`** [Delete default attribute ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-DeleteDefaultValues-defaultvalueId/delete)"
+        "description": "Saves locale-specific name and description translations for an existing PIM attribute. The request body must include an `AttributeCode` to identify the target attribute and a `Locales` array containing one entry per language with the translated `AttributeName` and `Description` values. Use this endpoint to add or update the attribute display text for a specific language without changing the attribute's core configuration.\r\n\r\n**Note:** This API is a mandatory follow-up step after successfully creating a PIM attribute using the [Create Attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post) API. It saves the localized attribute information required by the system. If this API is not executed, the attribute may not appear correctly in the Admin panel, and subsequent attribute update APIs may not function as expected.\n\n**Key field validations:**\n- `Locales[].LocaleId`: Required. Identifies the language for this translation.\n\n**Workflow:**\n\n1. Use the **[CreatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)** API to create a new PIM attribute.\n2. After successfully creating the attribute, use the **[SaveLocale](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)** API to add or update the localized attribute name and description.\n3. To update the core configuration of an existing PIM attribute, use the **[UpdatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)** API.\n4. To retrieve a list of PIM attributes, use the **[PimAttributeList](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)** API.\n5. To retrieve the details of a specific PIM attribute, use the **[GetPimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** API.\n6. To delete a PIM attribute, use the **[DeletePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Delete/post)** API.\r\n\r\n---\n\n### Related APIs\n\n- **`GET`** [List all PIM attributes](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)\n- **`GET`** [Retrieve a PIM attribute by ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)\n- **`POST`** [Create a PIM attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)\n- **`PUT`** [Update attribute data](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)\n- **`DELETE`** [Delete default attribute ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-DeleteDefaultValues-defaultvalueId/delete)"
       }
     },
     "/PIMAttribute/SaveDefaultValues": {
@@ -51893,12 +51991,33 @@
           "PIMAttribute"
         ],
         "summary": "Update an existing PIM attribute",
-        "description": "Updates an existing Product Information Management (PIM) attribute in the Znode catalog. The request must include a fully populated `PIMAttributeDataModel` with the target attribute's `PimAttributeId` set inside `AttributeModel`. Fields such as `AttributeCode` cannot be changed once created; however, display settings, front-end properties, validation rules, and localization flags can all be updated.\n\n**Workflow:**\n\n1. Use the **[CreatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)** API to create a new PIM attribute.\n2. After successfully creating the attribute, use the **[SaveLocale](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)** API to add or update the localized attribute name and description.\n3. To update the core configuration of an existing PIM attribute, use the **[UpdatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)** API.\n4. To retrieve a list of PIM attributes, use the **[PimAttributeList](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)** API.\n5. To retrieve the details of a specific PIM attribute, use the **[GetPimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** API.\n6. To delete a PIM attribute, use the **[DeletePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Delete/post)** API.\n\n**Key field validations:**\n- `PimAttributeId`: Required, must reference an existing attribute\n- `AttributeCode`: Required, alphanumeric only (`^[a-zA-Z0-9]*$`), max 100 characters - value must match the existing code (cannot be changed)\n- `DisplayOrder`: Integer between 1 and 999\n- `AttributeTypeId`: Must reference a valid attribute type\n\n**Use Cases:**\n- Update display order or help description of an existing attribute\n- Toggle `IsFilterable`, `IsFacets`, or `IsLocalizable` flags\n- Update front-end display and search behavior via `FrontProperties`\n- Modify or add input validation rules via `ValidationRule`\r\n\r\n---\r\n\r\n### Related APIs\r\n\r\n- **`GET`** [Get attribute list](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)\r\n- **`GET`** [Get attribute by attribute ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)\r\n- **`POST`** [Create attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)\r\n- **`POST`** [Save attribute locale values](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)\r\n- **`DELETE`** [Delete default attribute ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-DeleteDefaultValues-defaultvalueId/delete)",
+        "description": "Updates an existing Product Information Management (PIM) attribute in the Znode catalog. The request must include a fully populated `PIMAttributeDataModel` with the target attribute's `PimAttributeId` set inside `AttributeModel`. Fields such as `AttributeCode` cannot be changed once created; however, display settings, front-end properties, validation rules, and localization flags can all be updated.\n\n**Workflow:**\n\n1. Use the **[CreatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)** API to create a new PIM attribute.\n2. After successfully creating the attribute, use the **[SaveLocale](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)** API to add or update the localized attribute name and description.\n3. To update the core configuration of an existing PIM attribute, use the **[UpdatePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Update/put)** API.\n4. To retrieve a list of PIM attributes, use the **[PimAttributeList](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)** API.\n5. To retrieve the details of a specific PIM attribute, use the **[GetPimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** API.\n6. To delete a PIM attribute, use the **[DeletePimAttribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Delete/post)** API.\n\n**Key field validations:**\n- `PimAttributeId`: Required, must reference an existing attribute\n- `AttributeCode`: Required, alphanumeric only (`^[a-zA-Z0-9]*$`), max 100 characters - value must match the existing code (cannot be changed)\n- `DisplayOrder`: Integer between 1 and 999\n- `AttributeTypeId`: Must reference a valid attribute type. Get the current value from **[Get attribute by attribute ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** (`GET /PIMAttribute/Get/{id}`).\n\n**Working request body:**\n\n<pre style=\"background-color:#ffffff;color:#111111;border:1px solid #d0d7de;padding:12px;border-radius:6px;overflow:auto;\">\n{\n  \"AttributeModel\": {\n    \"PimAttributeId\": 1423,\n    \"AttributeTypeId\": 9,\n    \"AttributeCode\": \"Appple\",\n    \"IsRequired\": false,\n    \"IsLocalizable\": false,\n    \"IsFilterable\": true,\n    \"IsSystemDefined\": false,\n    \"IsPersonalizable\": false,\n    \"IsConfigurable\": false,\n    \"DisplayOrder\": 999,\n    \"IsCategory\": false\n  },\n  \"FrontProperties\": {\n    \"IsComparable\": true,\n    \"IsUseInSearch\": false,\n    \"IsAllowHtmlTag\": false,\n    \"IsFacets\": false\n  }\n}\n</pre>\n\n**Use Cases:**\n- Update display order or help description of an existing attribute\n- Toggle `IsFilterable`, `IsFacets`, or `IsLocalizable` flags\n- Update front-end display and search behavior via `FrontProperties`\n- Modify or add input validation rules via `ValidationRule`\r\n\r\n---\r\n\r\n### Related APIs\r\n\r\n- **`GET`** [Get attribute list](https://apidocs-v1.znode.com/#/paths/PIMAttribute-List/get)\r\n- **`GET`** [Get attribute by attribute ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)\r\n- **`POST`** [Create attribute](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Create/post)\r\n- **`POST`** [Save attribute locale values](https://apidocs-v1.znode.com/#/paths/PIMAttribute-SaveLocales/post)\r\n- **`DELETE`** [Delete default attribute ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-DeleteDefaultValues-defaultvalueId/delete)",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Znode.Engine.Api.Models.PIMAttributeDataModel"
+              },
+              "example": {
+                "AttributeModel": {
+                  "PimAttributeId": 1423,
+                  "AttributeTypeId": 9,
+                  "AttributeCode": "Appple",
+                  "IsRequired": false,
+                  "IsLocalizable": false,
+                  "IsFilterable": true,
+                  "IsSystemDefined": false,
+                  "IsPersonalizable": false,
+                  "IsConfigurable": false,
+                  "DisplayOrder": 999,
+                  "IsCategory": false
+                },
+                "FrontProperties": {
+                  "IsComparable": true,
+                  "IsUseInSearch": false,
+                  "IsAllowHtmlTag": false,
+                  "IsFacets": false
+                }
               }
             }
           }
@@ -66825,7 +66944,7 @@
         "tags": [
           "Products"
         ],
-        "summary": "Update product attribute values",
+        "summary": "Update attribute values of a product.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -66837,31 +66956,80 @@
         },
         "responses": {
           "200": {
-            "description": "**Success** - The operation completed successfully. The response contains the productattributevalue details.",
+            "description": "**Success** - The request was processed. `Status` is `true` when all values were saved. `Status` is `false` when an attribute code does not exist or the locale code is not found; attribute codes that do not exist are returned in `AttributeCodeValueList`.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Znode.Engine.Api.Models.Responses.ProductAttributeCodeValueListResponse"
+                },
+                "examples": {
+                  "saved": {
+                    "summary": "All values saved",
+                    "value": {
+                      "AttributeCodeValueList": null,
+                      "Status": true,
+                      "HasError": false,
+                      "ErrorCode": null,
+                      "ErrorMessage": null
+                    }
+                  },
+                  "unknownAttributeCode": {
+                    "summary": "An attribute code does not exist",
+                    "value": {
+                      "AttributeCodeValueList": [
+                        {
+                          "SKU": "SKU-1001",
+                          "AttributeCode": "Colour",
+                          "AttributeValue": "Blue"
+                        }
+                      ],
+                      "Status": false,
+                      "HasError": false,
+                      "ErrorCode": null,
+                      "ErrorMessage": null
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "**Bad Request** - The request contains invalid data. Common causes include missing required fields, invalid parameter values, or malformed request body content.",
+          "422": {
+            "description": "**Unprocessable Entity** - One or more attribute values failed validation and nothing was saved. `ErrorMessage` lists every problem. Common causes include:\r\n- A required attribute sent with an empty value.\r\n- A changed SKU or product type.\r\n- A value longer than the maximum characters or not matching the pattern of the attribute.\r\n- A number outside the allowed format, minimum or maximum.\r\n- An invalid date or a date outside the allowed range.\r\n- A value that is not an option of a select attribute.\r\n- Unsafe content such as HTML tags or script.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Znode.Libraries.Abstract.Models.ZnodeErrorDetail"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "ErrorCode": 5,
+                      "ErrorMessage": "SKU cannot be changed. MinimumQuantity must be greater than or equal to 1.",
+                      "HasError": true,
+                      "StatusCode": 422
+                    }
+                  }
                 }
               }
             }
           },
           "500": {
-            "description": "**Internal Server Error** - An unexpected error occurred on the server while processing the request. Please try again later or contact support if the issue persists.",
+            "description": "**Internal Server Error** - The request could not be processed. Common causes include:\r\n- A missing request body, SKU or locale code.\r\n- No attribute values in the request.\r\n- An unexpected error on the server.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Znode.Libraries.Abstract.Models.ZnodeErrorDetail"
+                  "$ref": "#/components/schemas/Znode.Engine.Api.Models.Responses.ProductAttributeCodeValueListResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "AttributeCodeValueList": null,
+                      "Status": false,
+                      "HasError": true,
+                      "ErrorCode": 8,
+                      "ErrorMessage": "Locale cannot be empty."
+                    }
+                  }
                 }
               }
             }
@@ -66870,7 +67038,7 @@
         "x-stoplight": {
           "id": "miw9rz7zzzwy"
         },
-        "description": "Updates attribute values for one or more products. Use this to bulk-update specific attribute data without re-submitting the full product record."
+        "description": "Updates attribute values of one product, identified by its SKU, without re-submitting the full product record. Every value is validated with the same rules as the Admin product page before anything is saved.\r\n\r\n---\r\n\r\n### Validation\r\n\r\n- **All or nothing:** if any value fails validation, nothing is saved and the response lists every problem.\r\n- **Spaces:** spaces before and after a value are removed before the value is validated and saved.\r\n- **Required attributes:** cannot be sent with an empty value.\r\n- **SKU and product type:** cannot be changed. Send the current value of the product or leave the attribute out.\r\n- **Text:** must not exceed the maximum characters and must match the pattern of the attribute, when these are set.\r\n- **Text area:** must not exceed the maximum characters of the attribute, when set.\r\n- **Number:** must match the negative and decimal settings of the attribute and stay within its minimum and maximum, when set.\r\n- **Date:** must be a valid date within the minimum and maximum of the attribute, when set. Dates are saved in the store date format, for example `15-Oct-2026`.\r\n- **Yes/No:** must be `true` or `false`.\r\n- **Simple select and multi select:** must be option codes of the attribute. A multi select value can be sent as one comma-separated value or as one entry per option.\r\n- **Unsafe content:** when XSS validation is enabled in the global settings, HTML tags and script content are rejected, except in attributes that use the rich-text editor.\r\n\r\n---\r\n\r\n### Clearing a Value\r\n\r\nSending an optional attribute with an empty value removes its value for the requested locale. Values in other locales are kept.\r\n\r\n---\r\n\r\n### Attribute Codes That Do Not Exist\r\n\r\nAn attribute code that does not exist is not saved and is returned in `AttributeCodeValueList` with `Status` set to `false`. The other values in the request are still saved.\r\n\r\n---\r\n\r\n### Related APIs\r\n\r\n- **`POST`** [Retrieve a product with attribute details](https://apidocs-v1.znode.com/#/paths/Products-GetProduct/post)\r\n- **`POST`** [Create a new product](https://apidocs-v1.znode.com/#/paths/Products-CreateProduct/post)\r\n- **`GET`** [List products](https://apidocs-v1.znode.com/#/paths/Products-GetProductList/get)\r\n- **`POST`** [Publish one or more products](https://apidocs-v1.znode.com/#/paths/Products-Publish/post)"
       }
     },
     "/Products/GetAssignedPersonalizedAttributes": {
@@ -108598,8 +108766,8 @@
           "SKU": {
             "type": "string",
             "nullable": true,
-            "description": "The s k u value for this record.\n\n**Admin Sandbox URL:** [PIM / Products / List](https://admin-z10-sandbox.znodestore.com/PIM/Products/List)\r\n\r\n**How to Retrieve:**\r\n\r\n\r\n\r\n**Knowledgebase:** [Managing Products](https://support.znode.com/support/solutions/articles/43000756872-managing-products)",
-            "example": "example"
+            "description": "SKU of the product to update. Identifies the product; the SKU itself cannot be changed through this endpoint.\r\n\r\n**Admin Sandbox URL:** [PIM / Products / List](https://admin-z10-sandbox.znodestore.com/PIM/Products/List)\r\n\r\n**How to Retrieve:**\r\n1. Navigate to [PIM / Products / List](https://admin-z10-sandbox.znodestore.com/PIM/Products/List).\r\n2. Find the product in the list.\r\n3. The **SKU** is displayed in the SKU column.\r\n\r\n**Knowledgebase:** [Managing Products](https://support.znode.com/support/solutions/articles/43000756872-managing-products)",
+            "example": "SKU-1001"
           },
           "LocaleCode": {
             "type": "string",
@@ -108613,11 +108781,11 @@
               "$ref": "#/components/schemas/Znode.Engine.Api.Models.PIMAttributeCodeValueModel"
             },
             "nullable": true,
-            "description": "A list of pimattributecodevalue items."
+            "description": "Attribute codes and the values to save for the product. An optional attribute sent with an empty value has its value removed for the requested locale."
           },
           "IsPublish": {
             "type": "boolean",
-            "description": "The is publish value for this record.",
+            "description": "Set to `true` to publish the product after the values are saved.",
             "example": true
           }
         },
@@ -117194,6 +117362,11 @@
             "nullable": true,
             "description": "Specifies which promotion types are permitted for use on store orders. Use this field to define or restrict which promotion categories can be applied when processing customer orders.\r\n\r\n**Admin Sandbox URL:** [General Setting / Get Configuration Settings](https://admin-z10-sandbox.znodestore.com/GeneralSetting/GetConfigurationSettings)\r\n\r\n**How to Retrieve:**\r\n1. Go to [General Setting / Get Configuration Settings](https://admin-z10-sandbox.znodestore.com/GeneralSetting/GetConfigurationSettings) in the Admin panel.\r\n2. The Promotions With Exceptions value is displayed in the Configuration Settings form.",
             "example": "Coupon,VolumeDiscount"
+          },
+          "AllowShippingDiscountsOnHandlingCharges": {
+            "type": "boolean",
+            "description": "Indicates whether shipping discounts are calculated on the combined amount of Shipping Charges and Handling Charges. \r\n\r\n**Admin Sandbox URL:** [General Setting / Get Configuration Settings](https://admin-z10-sandbox.znodestore.com/GeneralSetting/GetConfigurationSettings)\r\n\r\n**How to Retrieve:**\r\n1. Go to [General Setting / Get Configuration Settings](https://admin-z10-sandbox.znodestore.com/GeneralSetting/GetConfigurationSettings) in the Admin panel.\r\n2. The Allow Shipping Discounts On Handling Charges value is displayed in the Configuration Settings form.",
+            "example": true
           }
         },
         "additionalProperties": false,
@@ -137551,6 +137724,20 @@
             "nullable": true,
             "description": "The unique numeric identifier of the Item.",
             "example": "100"
+          },
+          "BackOrderQuantity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "description": "**Backorder Quantity** - The quantity of this order line item that was on backorder when the order was placed. Empty when the item was fully in stock or when the estimated backorder information was not recorded. The value can have decimals when the store inventory quantities do. It is the value saved when the order was placed, and it is returned whether or not the **Show Estimated Backorder Date and Quantity** setting is enabled.",
+            "example": 4
+          },
+          "BackOrderDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "**Backorder Date** - The estimated date on which the backordered quantity of this order line item is expected to be available, in ISO 8601 format. Empty when no backorder date applies. The display format depends on the **DateFormat** under General Settings.",
+            "example": "2025-02-15T00:00:00Z"
           }
         },
         "additionalProperties": false,
@@ -141602,6 +141789,9 @@
       },
       "Znode.Engine.Api.Models.PIMAttributeLocaleModel": {
         "type": "object",
+        "required": [
+          "LocaleId"
+        ],
         "properties": {
           "CreatedBy": {
             "type": "integer",
@@ -141672,9 +141862,8 @@
           "LocaleId": {
             "type": "integer",
             "format": "int32",
-            "nullable": true,
-            "description": "The unique numeric identifier of the locale for this translation entry.\r\n\r\n**Reference:** [Get Default Locale Details By Domain Name](https://apidocs-v1.znode.com/#/operations/get-Domain-GetDefaultLocaleFromDomain-retrieve-default-locale-details-by-domain-name)",
-            "example": 142
+            "description": "The unique numeric identifier of the locale for this translation entry. This field is required.\r\n\r\n**Reference:** [Get Default Locale Details By Domain Name](https://apidocs-v1.znode.com/#/operations/get-Domain-GetDefaultLocaleFromDomain-retrieve-default-locale-details-by-domain-name)",
+            "example": 1
           },
           "PimAttributeId": {
             "type": "integer",
@@ -141787,7 +141976,7 @@
           "AttributeTypeId": {
             "type": "integer",
             "format": "int32",
-            "description": "The unique identifier for the attribute type.\r\n\r\n**Admin Sandbox URL:** [PIM / Product Attribute / List](https://admin-z10-sandbox.znodestore.com/PIM/ProductAttribute/List)\r\n\r\n**How to Retrieve:**\r\n1. Navigate to [PIM / ProductAttribute / List](https://admin-z10-sandbox.znodestore.com/PIM/ProductAttribute/List)\r\n2. Edit the desired product attribute.\r\n3. Check the URL in the browser - the `PimAttributeId` parameter contains the value.\r\n\r\n**Knowledgebase:** [Managing Product Attributes](https://support.znode.com/support/solutions/articles/43000756863-managing-product-attributes)",
+            "description": "The unique identifier for the attribute type.\r\n\r\n**Reference:** [Get attribute by attribute ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)\r\n\r\n**How to Retrieve:**\r\n1. Call **[Get attribute by attribute ID](https://apidocs-v1.znode.com/#/paths/PIMAttribute-Get-id/get)** (`GET /PIMAttribute/Get/{id}`).\r\n2. Copy `AttributeTypeId` from the response and use it in `PIMAttribute/Update`.\r\n\r\nFor `PIMAttribute/Create`, get valid type IDs from **[Retrieve attribute types](https://apidocs-v1.znode.com/#/paths/PIMAttribute-AttributeTypes-isCategory/get)** (`GET /PIMAttribute/AttributeTypes/{isCategory}`).\r\n\r\n**Knowledgebase:** [Managing Product Attributes](https://support.znode.com/support/solutions/articles/43000756863-managing-product-attributes)",
             "nullable": true,
             "example": 142
           },
