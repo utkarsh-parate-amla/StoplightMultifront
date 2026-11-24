@@ -150235,18 +150235,6 @@
             "example": "f8e7d6c5-b4a3-2190-fedc-ba9876543210",
             "description": "The Azure Active Directory tenant ID for the organization hosting the Power BI workspace. This value identifies your Azure AD directory.\r\n\r\n**Admin Sandbox URL:** [PowerBI / Get Power BI Settings](https://admin-z10-sandbox.znodestore.com/PowerBI/GetPowerBISettings)\r\n\r\n**How to Retrieve:**\r\n1. Go to [PowerBI / Get Power BI Settings](https://admin-z10-sandbox.znodestore.com/PowerBI/GetPowerBISettings) in the Admin panel.\r\n2. The Tenant Id value is displayed in the Power BI settings form.\r\n\r\n**Knowledgebase:** [Znode Integration with Power BI and Power BI Configuration Settings](https://support.znode.com/support/solutions/articles/43000773432-znode-integration-with-power-bi-and-power-bi-configuration-settings)"
           },
-          "PowerBIUserName": {
-            "type": "string",
-            "nullable": true,
-            "example": "powerbi-admin@company.com",
-            "description": "The username (email address) of the Power BI account used to authenticate and access the Power BI service.\r\n\r\n**Admin Sandbox URL:** [PowerBI / Get Power BI Settings](https://admin-z10-sandbox.znodestore.com/PowerBI/GetPowerBISettings)\r\n\r\n**How to Retrieve:**\r\n1. Go to [PowerBI / Get Power BI Settings](https://admin-z10-sandbox.znodestore.com/PowerBI/GetPowerBISettings) in the Admin panel.\r\n2. The User Name value is displayed in the Power BI settings form.\r\n\r\n**Knowledgebase:** [Znode Integration with Power BI and Power BI Configuration Settings](https://support.znode.com/support/solutions/articles/43000773432-znode-integration-with-power-bi-and-power-bi-configuration-settings)"
-          },
-          "PowerBIPassword": {
-            "type": "string",
-            "nullable": true,
-            "example": "YourSecureP@ssword",
-            "description": "The password for the Power BI account used for authentication with the Power BI service. This value is stored securely and used to connect to the Power BI embedded reporting service.\r\n\r\n**Admin Sandbox URL:** [PowerBI / Get Power BI Settings](https://admin-z10-sandbox.znodestore.com/PowerBI/GetPowerBISettings)\r\n\r\n**How to Retrieve:**\r\n1. Go to [PowerBI / Get Power BI Settings](https://admin-z10-sandbox.znodestore.com/PowerBI/GetPowerBISettings) in the Admin panel.\r\n2. The Password value is displayed in the Power BI settings form.\r\n\r\n**Knowledgebase:** [Znode Integration with Power BI and Power BI Configuration Settings](https://support.znode.com/support/solutions/articles/43000773432-znode-integration-with-power-bi-and-power-bi-configuration-settings)"
-          },
           "PowerBIReportSettingId": {
             "type": "integer",
             "format": "int32",
@@ -228600,6 +228588,13 @@
             "type": "boolean",
             "description": "Indicates whether this option is enabled. Set to true to enable, or false to disable.",
             "example": true
+          },
+          "Weight": {
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "description": "Per-unit shipping weight of the line, in the store's weight unit. Used only by the InitiateShoppingCartCalculation method override: sent as the product's Weight attribute, and a returned value of zero or more is used for shipping in its place. Null in other responses.",
+            "example": 3.35
           }
         },
         "additionalProperties": false,
@@ -253385,6 +253380,12 @@
             "nullable": true,
             "description": "The file path to the script associated with this plugin configuration.",
             "example": "console.log(\"sample\");"
+          },
+          "PluginUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "The base URL of the plugin API, read from ZnodePluginDetails.PluginUrl. The payment manager uses it to call the plugin; when empty, the URL from appsettings is used.",
+            "example": "https://plugin.example.com"
           },
           "PluginType": {
             "type": "string",
